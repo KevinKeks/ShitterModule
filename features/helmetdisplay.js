@@ -1,22 +1,16 @@
 import Settings from "../config";
-import SmDisplay from "../displaymanager/displaymanager";
+import smgui from "../displaymanager/smgui";
 
-const display = new SmDisplay("Helmet Display", updateFunction);
-function updateFunction() {
-	if (Settings.helmetdisplay)
-		display.show();
-	else
-		display.hide();
-}
-updateFunction();
+const helmetdisplay = smgui.addDisplay("Helmet");
+helmetdisplay.addLine();
 
-register("step", () => {
+register("renderOverlay", () => {
 	if (!Settings.helmetdisplay) return;
 	let helmet = Player.armor.getHelmet()?.getName();
 	if (helmet) {
 		const regex = new RegExp(Player.armor.getHelmet()?.getNBT()?.toObject()?.tag?.ExtraAttributes?.modifier, "gi");
-		helmet = helmet.replace(regex, "");
-		helmet = helmet.replace(/✪/g, "");
+		helmet = helmet.replace(regex, "").replace(/✪/g, "");
 	}
-	display.setLine(0, helmet ? helmet : "");
-}).setFps("3");
+	helmetdisplay.setLine(0, helmet ?? "");
+	helmetdisplay.draw();
+})

@@ -1,5 +1,4 @@
 import { @Vigilant, @SliderProperty, @SelectorProperty, @SwitchProperty, @ButtonProperty, @CheckboxProperty } from 'Vigilance';
-import { updateDisplays } from './displaymanager/displaymanager'
 
 @Vigilant('shittermodule', 'ShitterModule', {
     getCategoryComparator: () => (a, b) => {
@@ -11,9 +10,6 @@ import { updateDisplays } from './displaymanager/displaymanager'
 class Settings {
     constructor() {
         this.initialize(this);
-
-        ["Helmet Display", "Invprocs Display", "Only In Dungeons", "Only In P3"]
-            .forEach(d => { this.registerListener(d, () => { updateDisplays() }) })
 
         this.addDependency("Rev Title", "Deathtitle");
         this.addDependency("Continuous", "Ghostpick");
@@ -143,7 +139,7 @@ class Settings {
 
     @SwitchProperty({
         name: 'Invprocs Display',
-        description: 'Displays off-cooldown your',
+        description: 'Displays for your proc-items',
         category: 'Other',
         subcategory: 'Invincibility Procs',
     })

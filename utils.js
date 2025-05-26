@@ -1,5 +1,3 @@
-import { updateDisplays } from './displaymanager/displaymanager'
-
 ////////////////////////////////////////// Initializing consts
 
 const mappedclasses = {
@@ -43,7 +41,6 @@ function initDungeon() {
 		let dunmatch = ChatLib.removeFormatting(l).match(/The Catac..ombs \((M[1-7]|F[1-7])\)/);
 		if (dunmatch) {
 			indun = dunmatch[1];
-			updateDisplays();
 		}
 
 		let playermatch = ChatLib.removeFormatting(l).match(/\[(M|A|B|T|H)\] (\S*) .?.?(\[Lv\d{1,2}\]|DEAD|[\d,]+❤)/);
@@ -61,12 +58,10 @@ export const getp3 = () => p3;
 
 register("chat", () => {
 	p3 = true;
-	updateDisplays();
 }).setCriteria("[BOSS] Goldor: Who dares trespass into my domain?");
 
 register("chat", () => {
 	p3 = false;
-	updateDisplays();
 }).setCriteria("The Core entrance is opening!");
 
 
@@ -116,7 +111,6 @@ register("worldUnload", () => {
 	p3 = false;
 	indun = "";
 	players = {};
-	updateDisplays();
 })
 
 
