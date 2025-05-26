@@ -1,8 +1,15 @@
 import Settings from "../config";
 import smgui from "../displaymanager/smgui";
+<<<<<<< HEAD
 import { prefix, getDungeon, getp3 } from "../utils"
 
 const invprocsdisplay = smgui.addDisplay("Inv Procs")
+=======
+import { prefix, indun, p3 } from "../utils"
+
+const invprocsdisplay = smgui.addDisplay("Inv Procs")
+register("renderOverlay", () => { if (Settings.ipdisplay && (!Settings.ipdponlydungeons || indun) && (!Settings.ipdponlyp3 || p3)) invprocsdisplay.draw() });
+>>>>>>> a043bdc (Some slight changes hope it dont break also i deleted my .git ups)
 
 let bonzocd, spiritcd, phoenixcd = false;
 let colorcode = 0;
@@ -36,7 +43,11 @@ register("packetReceived", packet => {
 		ChatLib.command(`pc ${item} procced!`);
 	if (Settings.ipproctitle) {
 		Client.showTitle("", "", 0, 1, 0);
+<<<<<<< HEAD
 		Client.showTitle(colours[colorcode] + `${item} proc`, "", 0, 20, 0);
+=======
+		Client.showTitle(`${colours[colorcode]} ${item} proc`, "", 0, 20, 0);
+>>>>>>> a043bdc (Some slight changes hope it dont break also i deleted my .git ups)
 	}
 	invprocsdisplay.setLine(lines.indexOf(item), `&d${item} &cNot Ready`)
 	colorcode++;
@@ -82,6 +93,7 @@ function onCooldown(item) {
 
 function onCdOver(item) {
 	colorcode--;
+<<<<<<< HEAD
 	if (Settings.ipshowwhenReady)
 		ChatLib.chat(`${prefix("Invprocs")}${item} Ready`);
 	if (Settings.ipReadytitle) {
@@ -96,3 +108,13 @@ register("renderOverlay", () => {
 	if (Settings.ipdisplay && (!Settings.ipdponlydungeons || getDungeon()) && (!Settings.ipdponlyp3 || getp3()))
 		invprocsdisplay.draw();
 })
+=======
+	if (Settings.ipshowwhenready)
+		ChatLib.chat(`${prefix("Invprocs")}${item} Ready`);
+	if (Settings.ipreadytitle) {
+		Client.showTitle("", "", 0, 1, 0);
+		Client.showTitle(`&f${item} Ready`, "", 0, 40, 0);
+	}
+	invprocsdisplay.setLine(lines.indexOf(item), `&d${item} &aReady`)
+}
+>>>>>>> a043bdc (Some slight changes hope it dont break also i deleted my .git ups)

@@ -18,7 +18,6 @@ class Settings {
         this.addDependency("Only In P3", "Invprocs Display");
     }
 
-    // dev
     @CheckboxProperty({
         name: "firstload",
         category: 'dev',
@@ -26,7 +25,6 @@ class Settings {
     })
     firstload = true;
 
-    // dungeons
     @SwitchProperty({
         name: "Betterbeam",
         description: "Makes the Magebeam look cooler",
@@ -102,7 +100,6 @@ class Settings {
     })
     m5rqdelay = 1000;
 
-    // other
     @SwitchProperty({
         name: 'Proc Title',
         description: 'Shows a title for the Bonzo Mask, Spirit Mask and Phoenix ability',
@@ -215,7 +212,6 @@ class Settings {
     })
     helmetdisplay = false;
 
-    // gui
     @ButtonProperty({
         name: 'Edit Gui',
         description: 'Use "Left Click" to move, "Right Click" to change alignment, "Middle Click" to add/remove background" and "Scroll" to change size',

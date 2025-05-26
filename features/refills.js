@@ -7,20 +7,22 @@ let bcd = false;
 register("chat", () => {
 	if (Settings.pearlrefill) {
 		let needed = getNeeded("§fEnder Pearl", 16);
-		if (16 > needed && needed > 0) {
-			if (pcd) return;
-			pcd = true;
-			setTimeout(() => pcd = false, 2000);
-			rungfs((`ENDER_PEARL ${needed}`))
+		if (16 < needed && needed > 0) {
+			if (!pcd) {
+				pcd = true;
+				setTimeout(() => pcd = false, 2000);
+				rungfs((`ENDER_PEARL ${needed}`))
+			}
 		}
 	}
 	if (Settings.boomrefill) {
 		let needed = getNeeded("§9Superboom TNT");
 		if (64 > needed && needed > 0) {
-			if (bcd) return;
-			bcd = true;
-			setTimeout(() => bcd = false, 2000);
-			rungfs((`SUPERBOOM_TNT ${needed}`))
+			if (!bcd) {
+				bcd = true;
+				setTimeout(() => bcd = false, 2000);
+				rungfs((`SUPERBOOM_TNT ${needed}`))
+			}
 		}
 	}
 }).setCriteria("Starting in 1 second.");
@@ -28,22 +30,25 @@ register("chat", () => {
 register("clicked", (_, __, btn, state) => {
 	if (!state) return;
 	if (Settings.pearlrefill && Player.getHeldItem()?.name === "§fEnder Pearl") {
-		if (btn != 1) return;
-		let needed = getNeeded("§fEnder Pearl", 16)
-		if (needed > 7) {
-			if (pcd) return;
-			pcd = true;
-			setTimeout(() => pcd = false, 2000);
-			rungfs((`ENDER_PEARL ${needed}`))
+		if (btn == 1) {
+			let needed = getNeeded("§fEnder Pearl", 16)
+			if (needed > 7) {
+				if (!pcd) {
+					pcd = true;
+					setTimeout(() => pcd = false, 2000);
+					rungfs((`ENDER_PEARL ${needed}`))
+				}
+			}
 		}
 	}
-	if (Settings.pearlrefill && Player.getHeldItem()?.name === "§9Superboom TNT") {
+	if (Settings.boomrefill && Player.getHeldItem()?.name === "§9Superboom TNT") {
 		let needed = getNeeded("§9Superboom TNT")
 		if (needed > 31) {
-			if (bcd) return;
-			bcd = true;
-			setTimeout(() => bcd = false, 2000);
-			rungfs((`SUPERBOOM_TNT ${needed}`))
+			if (!bcd) {
+				bcd = true;
+				setTimeout(() => bcd = false, 2000);
+				rungfs((`SUPERBOOM_TNT ${needed}`))
+			}
 		}
 	}
 })

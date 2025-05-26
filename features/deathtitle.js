@@ -9,9 +9,7 @@ register("chat", (info) => {
 	if (ign == "You") return;
 	if (info.includes("disconnected")) {
 		disc.push(ign)
-		setTimeout(() => {
-			disc.splice(disc.indexOf(ign), 1);
-		}, 1000)
+		setTimeout(() => disc.splice(disc.indexOf(ign), 1), 1000)
 	}
 	let dclass = getDclass(ign);
 	if (!dclass) return;
@@ -20,9 +18,8 @@ register("chat", (info) => {
 	setTimeout(() => { Client.showTitle("&c☠ " + dclass + " ☠", ign, 0, 25, 5); }, 1);
 }).setCriteria(" ☠ ${info} and became a ghost.");
 
-register("chat", (info) => {
+register("chat", (ign) => {
 	if (!Settings.dtrevtitle) return;
-	let ign = info;
 	let dclass = getDclass(ign);
 	if (!dclass) return;
 
@@ -35,4 +32,4 @@ register("chat", (info) => {
 		setTimeout(() => { Client.showTitle("§a1 " + dclass + " §a1", ign, 0, 10, 5); }, 3000);
 		setTimeout(() => { Client.showTitle("§a❣ " + dclass + " §a❣", ign, 0, 15, 5); }, 4000);
 	}, 1000)
-}).setCriteria(" ❣ You are reviving ${info}!");
+}).setCriteria(" ❣ You are reviving ${ign}!");

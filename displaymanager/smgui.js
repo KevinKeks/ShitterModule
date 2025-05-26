@@ -1,4 +1,4 @@
-import DDM from './DogshitDisplayManager';
+import DDM from './dogshitdisplaymanager';
 
 const smgui = new DDM("Shittermodule", "displaymanager/displaydata");
 

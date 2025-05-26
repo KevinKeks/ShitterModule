@@ -23,29 +23,20 @@ const firstloadreg = register("worldLoad", () => {
 	firstloadreg.unregister();
 });
 
-register("command", () => {
-	Settings.openGUI();
-}).setName("shittermodule").setAliases("sm");
+register("command", () => Settings.openGUI()).setName("shittermodule").setAliases("sm");
 
+register("command", () => togglem5rq()).setName("m5rq");
 const m5rqkeybind = new KeyBind("M5rq", Keyboard.KEY_NONE, "ShitterModule");
-m5rqkeybind.registerKeyPress(() => {
+m5rqkeybind.registerKeyPress(() => togglem5rq());
+const togglem5rq = () => {
 	Settings.m5rq = !Settings.m5rq;
 	ChatLib.chat(prefix("M5rq") + (Settings.m5rq ? "enabled" : "disabled"))
-});
+}
 
-register("command", () => {
-	Settings.m5rq = !Settings.m5rq;
-	ChatLib.chat(prefix("M5rq") + (Settings.m5rq ? "enabled" : "disabled"))
-}).setName("m5rq");
-
-
+register("command", () => togglegp()).setName("ghostpick").setAliases("gp");
 const ghostpickkeybind = new KeyBind("Ghostpick", Keyboard.KEY_NONE, "ShitterModule");
-ghostpickkeybind.registerKeyPress(() => {
+ghostpickkeybind.registerKeyPress(() => togglegp());
+const togglegp = () => {
 	Settings.ghostpick = !Settings.ghostpick;
 	ChatLib.chat(prefix("Ghostpick") + (Settings.ghostpick ? "enabled" : "disabled"))
-});
-
-register("command", () => {
-	Settings.ghostpick = !Settings.ghostpick;
-	ChatLib.chat(prefix("Ghostpick") + (Settings.ghostpick ? "enabled" : "disabled"))
-}).setName("ghostpick").setAliases("gp");
+}
