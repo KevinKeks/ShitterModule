@@ -1,7 +1,7 @@
 import PogObject from 'PogData';
 
 class DDM {
-    #gui; #displaydata; #displays = {}; #selected = undefined; #selectedoffset = [0, 0]; #guiopen = false;
+    #gui; #displaydata; #displays = {}; #selected = undefined; #selectedoffset = [0, 0]; #guiopen = false; #displaybackgrounds = {};
     constructor(moduleName, path = undefined) {
         this.#gui = new Gui()
         if (!moduleName) console.warn('[DDM]: No modulename provided. Saving data in "modules -> data" folder')
@@ -9,25 +9,28 @@ class DDM {
 
         this.#gui.registerOpened(() => {
             this.#guiopen = true;
+            Object.values(this.#displays).forEach(d => this.#displaybackgrounds[d.name] = d.BackgroundColor);
+            Object.values(this.#displays).forEach(d => d.setBackgroundColor(-2113929216));
         });
         this.#gui.registerClosed(() => {
             this.#selected = undefined;
             this.#selectedoffset = [0, 0];
-            Object.values(this.#displays).forEach(d => d.setBackgroundColor(2101296959));
+            Object.values(this.#displays).forEach(d => d.setBackgroundColor(this.#displaybackgrounds[d.name]));
+            this.#displaybackgrounds = {};
             this.#guiopen = false;
         });
         this.#gui.registerDraw(() => {
             Object.values(this.#displays).forEach(d => d.draw(this, this.#selected));
         });
         this.#gui.registerClicked((x, y, btn) => {
-            if (this.#selected) this.#selected.setBackgroundColor(2101296959);
+            if (this.#selected) this.#selected.setBackgroundColor(-2113929216);
             this.#selected = Object.values(this.#displays).find(display =>
                 x >= display.X - 1
                 && x < display.X + display.Width
                 && y >= display.Y
                 && y < display.Y + display.Height);
             if (!this.#selected) return;
-            this.#selected.setBackgroundColor(520093695);
+            this.#selected.setBackgroundColor(-2105376126);
             if (btn == 0.0) {
                 this.#selectedoffset[0] = this.#selected.X - x;
                 this.#selectedoffset[1] = this.#selected.Y - y;
@@ -39,7 +42,7 @@ class DDM {
                 this.#selected.setBackground(!this.#selected.Background);
             }
         });
-        this.#gui.registerKeyTyped((_, kc) => {
+        this.#gui.registerKeyTyped((char, kc) => {
             if (!this.#selected) return;
             if (kc == 203) {
                 this.#selected.setX(this.#selected.X - 1);
@@ -52,6 +55,12 @@ class DDM {
             }
             else if (kc == 208) {
                 this.#selected.setY(this.#selected.Y + 1);
+            }
+            else if (String(char) === "+") {
+                this.#selected.setScale(this.#selected.Scale + 0.1);
+            }
+            else if (String(char) === "-") {
+                this.#selected.setScale(this.#selected.Scale - 0.1);
             }
         });
         this.#gui.registerMouseDragged((x, y, btn) => {
@@ -76,7 +85,7 @@ class DDM {
         })
     }
 
-    addDisplay(name, x = Renderer.screen.getWidth() / 2, y = Renderer.screen.getHeight() / 4, scale = 1, background = false, align = "LEFT") {
+    addDisplay(name, x = Number((Renderer.screen.getWidth() / 3).toFixed(0)), y = Number((Renderer.screen.getHeight() / 4).toFixed(0)), scale = 1, background = false, align = "LEFT") {
         if (this.#displays[name]) return console.warn(`[DDM]: Display with #name "${name}" already exists`);
         if (!this.#displaydata[name]) {
             this.#displaydata[name] = { x, y, scale, background, align }
@@ -97,8 +106,8 @@ class DDM {
     close() { this.#gui.close(); }
     reset() {
         Object.values(this.#displays).forEach(d => {
-            d.setX(Renderer.screen.getWidth() / 2);
-            d.setY(Renderer.screen.getHeight() / 4);
+            d.setX(Number((Renderer.screen.getWidth() / 3).toFixed(0)));
+            d.setY(Number((Renderer.screen.getHeight() / 4).toFixed(0)));
             d.setScale(1);
             d.setBackground(false);
             d.setAlign("LEFT");
@@ -116,7 +125,7 @@ class DDM {
 
 
     DogshitDisplay = class {
-        #x; #y; #scale; #background; #align; #displayLines; #width = 0; #height = 0; #backgroundColor = 2097152000; #textcolor = -1; #gui; #lastClickTimestamp = 0; #clickAction;
+        #x; #y; #scale; #background; #align; #displayLines; #width = 0; #height = 0; #backgroundColor = -2113929216; #textcolor = -1; #gui; #lastClickTimestamp = 0; #clickAction;
         constructor(name, x, y, scale, background, align, gui) {
             this.name = name;
             this.#x = x;
@@ -160,6 +169,7 @@ class DDM {
             this.#background = background ? DisplayHandler.Background.FULL : DisplayHandler.Background.NONE;
             return this;
         }
+        get BackgroundColor() { return this.#backgroundColor; }
         setBackgroundColor(backgroundColor) {
             this.#backgroundColor = backgroundColor;
             return this;

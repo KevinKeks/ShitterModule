@@ -11,16 +11,14 @@ class Settings {
     constructor() {
         this.initialize(this);
 
-        this.addDependency("Rev Title", "Deathtitle");
         this.addDependency("Continuous", "Ghostpick");
         this.addDependency("Dungeons Only", "Ghostpick");
-        this.addDependency("Delay", "M5rq");
         this.addDependency("Sound", "Miningability");
         this.addDependency("Only In Dungeons", "Invprocs Display");
-        this.addDependency("Only In P3", "Only In Dungeons");
+        this.addDependency("Only In P3", "Invprocs Display");
     }
 
-    ////////////////////////////////////////////////////////////////////////////////// dev
+    // dev
     @CheckboxProperty({
         name: "firstload",
         category: 'dev',
@@ -28,7 +26,7 @@ class Settings {
     })
     firstload = true;
 
-    ////////////////////////////////////////////////////////////////////////////////// Dungeons
+    // dungeons
     @SwitchProperty({
         name: "Betterbeam",
         description: "Makes the Magebeam look cooler",
@@ -39,7 +37,7 @@ class Settings {
 
     @SwitchProperty({
         name: "Deathtitle",
-        description: "Title for when someone dies in dungeons",
+        description: "Shows a title with the class when someone dies in dungeons",
         category: "Dungeons",
         subcategory: "Deathtitle",
     })
@@ -47,7 +45,7 @@ class Settings {
 
     @SwitchProperty({
         name: "Rev Title",
-        description: "Also show a title when reviving someone",
+        description: "Shows a title with the class when you revive someone",
         category: "Dungeons",
         subcategory: 'Deathtitle',
     })
@@ -55,7 +53,7 @@ class Settings {
 
     @SwitchProperty({
         name: "Ghostpick",
-        description: "Let's your ghostpick easier (tis legit trust)\nRequires a pickaxe in hotbar\n&c! Use at your own risk !",
+        description: "Let's your ghostpick easier (tis legit trust)\nRequires a pickaxe in hotbar\n&cUse at your own risk!",
         category: "Dungeons",
         subcategory: 'Ghostpick',
     })
@@ -63,14 +61,14 @@ class Settings {
 
     @SelectorProperty({
         name: 'Slot',
-        description: 'Select the Hotbarslot to ghostpick with',
+        description: 'Select the hotbarslot to ghostpick with',
         category: 'Dungeons',
         subcategory: 'Ghostpick',
         options: ['1', '2', '3', '4', '5', '6', '7', '8']
     })
     gpslot = 0;
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Continuous",
         description: "Automatically swap back for continuous ghostpicking",
         category: "Dungeons",
@@ -78,7 +76,7 @@ class Settings {
     })
     gpcontinuous = false;
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: "Dungeons Only",
         description: "Turn on to disable ghostpick outside of dungeons",
         category: "Dungeons",
@@ -96,7 +94,7 @@ class Settings {
 
     @SliderProperty({
         name: 'Delay',
-        description: 'Delay in Milliseconds before requeue. Number between 0 and 2000.\n&cCan requeue too early',
+        description: 'Delay in Milliseconds before requeue. Number between 0 and 2000.\n&cCan requeue too early!',
         category: 'Dungeons',
         subcategory: 'M5rq',
         min: 0,
@@ -104,10 +102,10 @@ class Settings {
     })
     m5rqdelay = 1000;
 
-    ////////////////////////////////////////////////////////////////////////////////// Other
+    // other
     @SwitchProperty({
         name: 'Proc Title',
-        description: 'Shows a title for Bonzo Mask, Spirit Mask and Phoenix abilities',
+        description: 'Shows a title for the Bonzo Mask, Spirit Mask and Phoenix ability',
         category: 'Other',
         subcategory: 'Invincibility Procs',
     })
@@ -123,7 +121,7 @@ class Settings {
 
     @SwitchProperty({
         name: 'Show When Ready',
-        description: 'Shows in chat when the ability cooldown is over',
+        description: 'Shows in chat when the ability cooldown for an item is over',
         category: 'Other',
         subcategory: 'Invincibility Procs',
     })
@@ -131,7 +129,7 @@ class Settings {
 
     @SwitchProperty({
         name: 'Ready Title',
-        description: 'Shows in chat when the ability cooldown is over',
+        description: 'Shows a title when the ability cooldown for an item is over',
         category: 'Other',
         subcategory: 'Invincibility Procs',
     })
@@ -139,13 +137,13 @@ class Settings {
 
     @SwitchProperty({
         name: 'Invprocs Display',
-        description: 'Displays for your proc-items',
+        description: 'Display for your proc-items',
         category: 'Other',
         subcategory: 'Invincibility Procs',
     })
     ipdisplay = false;
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: 'Only In Dungeons',
         description: 'Show display only in dungeons',
         category: 'Other',
@@ -153,7 +151,7 @@ class Settings {
     })
     ipdponlydungeons = false;
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: 'Only In P3',
         description: 'Show display only in P3',
         category: 'Other',
@@ -179,7 +177,7 @@ class Settings {
 
     @SwitchProperty({
         name: 'Sceptrepearl',
-        description: 'Pearl when right-clicking a block with a spirit sceptre\n&c! Use at your own risk !',
+        description: 'Pearl when right-clicking a block with a spirit sceptre\n&cUse at your own risk!',
         category: 'Other',
         subcategory: 'Sceptrepearl',
     })
@@ -187,7 +185,7 @@ class Settings {
 
     @SwitchProperty({
         name: 'Pjoin',
-        description: 'Send party invite to ppl who dm you "!pjoin"',
+        description: 'Send a party invite to ppl who dm you "!pjoin"',
         category: 'Other',
         subcategory: 'Pjoin',
     })
@@ -195,13 +193,13 @@ class Settings {
 
     @SwitchProperty({
         name: 'Miningability',
-        description: 'Title for when youre mining ability is ready',
+        description: 'Shows a title when your mining ability is ready',
         category: 'Other',
         subcategory: 'Miningability',
     })
     miningability = false;
 
-    @SwitchProperty({
+    @CheckboxProperty({
         name: 'Sound',
         description: 'Also play a sound',
         category: 'Other',
@@ -211,16 +209,16 @@ class Settings {
 
     @SwitchProperty({
         name: 'Helmet Display',
-        description: 'Display Your Helmet As Text On Screen',
+        description: 'Displays your helmet as text on screen',
         category: 'Other',
         subcategory: 'Helmet Display',
     })
     helmetdisplay = false;
 
-    ////////////////////////////////////////////////////////////////////////////////// Gui
+    // gui
     @ButtonProperty({
         name: 'Edit Gui',
-        description: 'Use "Left Click" to move and "Right Click" to change alignment',
+        description: 'Use "Left Click" to move, "Right Click" to change alignment, "Middle Click" to add/remove background" and "Scroll" to change size',
         category: 'Gui',
         placeholder: 'Edit Gui',
     })
@@ -230,7 +228,7 @@ class Settings {
 
     @ButtonProperty({
         name: 'Reset Gui',
-        description: 'Puts all displays in one place',
+        description: 'Resets all displays',
         category: 'Gui',
         placeholder: 'Reset Gui',
     })
