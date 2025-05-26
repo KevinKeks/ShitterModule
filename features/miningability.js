@@ -1,10 +1,10 @@
 import Settings from "../config";
-import { indun } from "../utils";
+import { getdun } from "../utils";
 
 const abilityreg = new RegExp(/Mining Speed Boost|Pickobulus|Anomalous Desire|Maniac Miner|Gemstone Infusion|Sheer Force/);
 
 register("chat", (ability) => {
-	if (!Settings.miningability || indun) return;
+	if (!Settings.miningability || getdun()) return;
 	if (!abilityreg.test(ability)) return;
 	setTimeout(() => {
 		Client.showTitle("", "", 0, 1, 0)

@@ -10,16 +10,15 @@ export function prefix(feature) {
 	return "&b[&6SM&b]" + (feature ? ` &d${feature}` : "") + "&f: ";
 }
 
-export let indun;
+let indun;
+export const getdun = () => indun;
 let players = {};
 export function getDclass(ign) {
 	return players[ign];
 }
 register("worldLoad", () => {
-	setTimeout(() => {
-		if (indun) return;
-		initDungeon();
-	}, 5000);
+	setTimeout(() => { if (indun) return; initDungeon(); }, 1000);
+	setTimeout(() => { if (indun) return; initDungeon(); }, 5000);
 })
 register("chat", () => {
 	if (indun) return
@@ -38,7 +37,8 @@ function initDungeon() {
 	})
 }
 
-export let p3 = false;
+let p3 = false;
+export const getp3 = () => p3;
 register("chat", () => {
 	p3 = true;
 }).setCriteria("[BOSS] Goldor: Who dares trespass into my domain?");
@@ -65,7 +65,7 @@ function execgfs() {
 
 register("worldUnload", () => {
 	p3 = false;
-	indun = "";
+	indun = undefined;
 	players = {};
 	gfsqueue.length = 0;
 })

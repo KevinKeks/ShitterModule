@@ -1,9 +1,9 @@
 import Settings from "../config";
 import smgui from "../displaymanager/smgui";
-import { prefix, indun, p3 } from "../utils"
+import { prefix, getdun, getp3 } from "../utils"
 
 const invprocsdisplay = smgui.addDisplay("Inv Procs")
-register("renderOverlay", () => { if (Settings.ipdisplay && (!Settings.ipdponlydungeons || indun) && (!Settings.ipdponlyp3 || p3)) invprocsdisplay.draw() });
+register("renderOverlay", () => { if (Settings.ipdisplay && (!Settings.ipdponlydungeons || getdun()) && (!Settings.ipdponlyp3 || getp3())) invprocsdisplay.draw() });
 
 let bonzocd, spiritcd, phoenixcd = false;
 let colorcode = 0;

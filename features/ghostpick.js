@@ -1,5 +1,5 @@
 import Settings from "../config";
-import { indun } from "../utils.js"
+import { getdun } from "../utils.js"
 
 let pickaxeindex = getIndex(278);
 if (!pickaxeindex)
@@ -27,7 +27,7 @@ const axereg = new RegExp(/Wood|((Oak|Birch|Acacia|Jungle|Spruce) (Stairs|Slab|F
 const shearsreg = new RegExp(/Wool|Leaves/, "i");
 
 register("HitBlock", () => {
-	if (!Settings.ghostpick || (Settings.gpdungeonsonly && !indun) || Player.getHeldItemIndex() != Settings.gpslot || Player.getMotionY() != -0.0784000015258789) return;
+	if (!Settings.ghostpick || (Settings.gpdungeonsonly && !getdun()) || Player.getHeldItemIndex() != Settings.gpslot || Player.getMotionY() != -0.0784000015258789) return;
 	let block = Player.lookingAt().type.getName();
 	if (block.match(pickaxereg) && pickaxeindex)
 		Player.setHeldItemIndex(pickaxeindex);
@@ -41,7 +41,7 @@ register("HitBlock", () => {
 
 register("BlockBreak", () => {
 	let itemid = Player.getHeldItem()?.getID();
-	if (Settings.ghostpick && Settings.gpcontinuous && (!Settings.gpdungeonsonly || indun) && swap && (itemid == 278 || itemid == 285 || itemid == 286 || itemid == 359))
+	if (Settings.ghostpick && Settings.gpcontinuous && (!Settings.gpdungeonsonly || getdun()) && swap && (itemid == 278 || itemid == 285 || itemid == 286 || itemid == 359))
 		Player.setHeldItemIndex(Settings.gpslot);
 	swap = false;
 });

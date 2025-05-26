@@ -1,5 +1,5 @@
 import Settings from "../config";
-import { indun, prefix } from "../utils";
+import { getdun, prefix } from "../utils";
 
 
 let downtime = false;
@@ -12,7 +12,7 @@ register("chat", () => {
 }).setCriteria("[BOSS] ${*} Livid: My shadows are everywhere, THEY WILL FIND YOU!!");
 
 register("chat", (ign, reason) => {
-	if (downtime || !Settings.m5rq || !indun.match(/M5|F5/)) return;
+	if (downtime || !Settings.m5rq || !getdun().match(/M5|F5/)) return;
 	downtime = true;
 	ign = ign.replace(/\[[\w+\+-]+] /, "");
 	setTimeout(() => {
