@@ -1,7 +1,0 @@
-{
-  "name": "ShitterModule",
-  "creator": "Cookiekevin",
-  "description": "plz gimme coin",
-  "entry": "index.js",
-  "requires": ["Vigilance", "PogData"]
-}
