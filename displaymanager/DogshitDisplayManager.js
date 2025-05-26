@@ -85,7 +85,7 @@ class DDM {
         })
     }
 
-    addDisplay(name, x = Number((Renderer.screen.getWidth() / 3).toFixed(0)), y = Number((Renderer.screen.getHeight() / 4).toFixed(0)), scale = 1, background = false, align = "LEFT") {
+    addDisplay(name, x = Number((Renderer.screen.getWidth() / 3).toFixed()), y = Number((Renderer.screen.getHeight() / 4).toFixed()), scale = 1, background = false, align = "LEFT") {
         if (this.#displays[name]) return console.warn(`[DDM]: Display with #name "${name}" already exists`);
         if (!this.#displaydata[name]) {
             this.#displaydata[name] = { x, y, scale, background, align }
@@ -106,8 +106,8 @@ class DDM {
     close() { this.#gui.close(); }
     reset() {
         Object.values(this.#displays).forEach(d => {
-            d.setX(Number((Renderer.screen.getWidth() / 3).toFixed(0)));
-            d.setY(Number((Renderer.screen.getHeight() / 4).toFixed(0)));
+            d.setX(Number((Renderer.screen.getWidth() / 3).toFixed()));
+            d.setY(Number((Renderer.screen.getHeight() / 4).toFixed()));
             d.setScale(1);
             d.setBackground(false);
             d.setAlign("LEFT");
