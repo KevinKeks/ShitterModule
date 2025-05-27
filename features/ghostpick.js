@@ -22,9 +22,9 @@ function getIndex(id) {
 }
 
 let swap = false;
-const pickaxereg = new RegExp(/Stone(?! Button)|Quartz|Stained Clay|Hopper|Block of (Iron|Gold|Coal|Diamond)|Iron Bars|Ice|Brick|Cauldron|Anvil/, "i");
-const axereg = new RegExp(/Wood|((Oak|Birch|Acacia|Jungle|Spruce) (Stairs|Slab|Fence))|Sign|Melon/, "i");
-const shearsreg = new RegExp(/Wool|Leaves/, "i");
+const pickaxereg = /Stone(?! Button)|Quartz|Stained Clay|Hopper|Block of (Iron|Gold|Coal|Diamond)|Iron Bars|Ice|Brick|Cauldron|Anvil/i;
+const axereg = /Wood|((Oak|Birch|Acacia|Jungle|Spruce) (Stairs|Slab|Fence))|Sign|Melon/i;
+const shearsreg = /Wool|Leaves/i;
 
 register("HitBlock", () => {
 	if (!Settings.ghostpick || (Settings.gpdungeonsonly && !getdun()) || Player.getHeldItemIndex() != Settings.gpslot || Player.getMotionY() != -0.0784000015258789) return;

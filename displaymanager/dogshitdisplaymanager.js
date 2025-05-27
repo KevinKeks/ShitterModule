@@ -25,8 +25,8 @@ class DDM {
         this.#gui.registerClicked((x, y, btn) => {
             if (this.#selected) this.#selected.setBackgroundColor(-2113929216);
             this.#selected = Object.values(this.#displays).find(display =>
-                x >= display.X - 1
-                && x < display.X + display.Width
+                x >= display.X - 1 - display._getXAdjust()
+                && x < display.X + display.Width - display._getXAdjust()
                 && y >= display.Y
                 && y < display.Y + display.Height);
             if (!this.#selected) return;
@@ -177,9 +177,10 @@ class DDM {
         get Align() { return this.#align; }
         setAlign(align) {
             this.#align = align.toUpperCase();
+            this.#x = this.#x + (this._getXAdjust(true) == 0 ? (- this.#width) : (this.#width / 2))
             return this;
         }
-        addLine(text) {
+        addLine(text = "") {
             this.#displayLines.push(new DisplayLine(text).setScale(this.#scale));
             this._calculateBounds();
             if (this.#clickAction)
@@ -187,10 +188,11 @@ class DDM {
             return this;
         }
         addLines(texts) {
+            if (!texts) return;
             texts.forEach(text => this.addLine(text));
             return this;
         }
-        setLine(index, text) {
+        setLine(index, text = "") {
             if (index < 0 || index >= this.#displayLines.length) return;
             this.#displayLines[index].setText(text).setScale(this.#scale);
             this._calculateBounds()
@@ -242,7 +244,9 @@ class DDM {
             this.#height = this.#displayLines.length * 10 * this.#scale;
             this.#width = this.#displayLines.reduce((max, dl) => Math.max(max, dl.getTextWidth()), 0);
         }
-
+        _getXAdjust(setalign) {
+            return (DDM.Alignmentsorder.indexOf(this.#align) / 2) * (setalign ? 1 : this.#width);
+        }
 
         draw(gui, selected) {
             if (!this.#displayLines.length) return;
@@ -250,13 +254,13 @@ class DDM {
             const guiopen = this.#gui.isguiopen;
             if (guiopen && guirender && this === selected) {
                 const tempLine = new DisplayLine(`x: ${this.#x} y: ${this.#y} scale: ${Number(this.#scale).toFixed(1)}\nalign: ${this.#align.toLowerCase()} background: ${this.Background ? "on" : "off"}`);
-                tempLine.draw(this.#x, this.#y - 20, tempLine.getTextWidth(), DisplayHandler.Background.NONE, 0, -1, DisplayHandler.Align.LEFT);
+                tempLine.draw(this.#x - this._getXAdjust(), this.#y - 20, tempLine.getTextWidth(), DisplayHandler.Background.NONE, 0, -1, DisplayHandler.Align.LEFT);
             }
             let height = 0;
             const background = (guiopen && guirender) ? DisplayHandler.Background.FULL : this.#background;
             if (guiopen && !guirender || this.#width === 0 || this.#height === 0) return;
             this.#displayLines.forEach(dl => {
-                dl.draw(this.#x + this.#width * (DDM.Alignmentsorder.indexOf(this.#align) / 2), this.#y + height, this.#width, background, this.#backgroundColor, this.#textcolor, DDM.Alignments[this.#align]);
+                dl.draw(this.#x, this.#y + height, this.#width, background, this.#backgroundColor, this.#textcolor, DDM.Alignments[this.#align]);
                 height += 10 * this.#scale;
             });
         }
