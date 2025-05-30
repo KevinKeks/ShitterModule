@@ -1,10 +1,10 @@
 import Settings from '../config';
-import { rungfs } from '../utils'
+import rungfs from '../utils/gfsqueue'
 
 let pcd = false;
 let bcd = false;
 
-register("chat", () => {
+const reg1 = register("chat", () => {
 	if (Settings.pearlrefill) {
 		let needed = getNeeded("§fEnder Pearl", 16);
 		if (16 < needed && needed > 0) {
@@ -25,10 +25,11 @@ register("chat", () => {
 			}
 		}
 	}
-}).setCriteria("Starting in 1 second.");
+}).setCriteria("Starting in 1 second.").unregister();
 
-register("clicked", (_, __, btn, state) => {
+const reg2 = register("clicked", (_, __, btn, state) => {
 	if (!state) return;
+	if (Client.currentGui.get() !== null) return;
 	if (Settings.pearlrefill && Player.getHeldItem()?.name === "§fEnder Pearl") {
 		if (btn == 1) {
 			let needed = getNeeded("§fEnder Pearl", 16)
@@ -42,6 +43,7 @@ register("clicked", (_, __, btn, state) => {
 		}
 	}
 	if (Settings.boomrefill && Player.getHeldItem()?.name === "§9Superboom TNT") {
+		if (Player.lookingAt().name === "Air") return;
 		let needed = getNeeded("§9Superboom TNT")
 		if (needed > 31) {
 			if (!bcd) {
@@ -51,7 +53,7 @@ register("clicked", (_, __, btn, state) => {
 			}
 		}
 	}
-})
+}).unregister();
 
 function getNeeded(item, maxStack) {
 	if (!item) return; if (!maxStack) maxStack = 64;
@@ -61,3 +63,17 @@ function getNeeded(item, maxStack) {
 	}
 	return 0;
 }
+
+
+const refills = {
+	update() {
+		if (Settings.maintoggle && (Settings.pearlrefill || Settings.boomrefill)) {
+			reg1.register(); reg2.register();
+		}
+		else {
+			reg1.unregister(); reg2.unregister();
+		}
+	}
+}
+
+export default refills;

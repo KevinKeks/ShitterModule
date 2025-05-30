@@ -1,25 +1,25 @@
 import Settings from "../config";
-import { getDclass } from "../utils.js";
+import { getDclass } from "../utils/dungeons";
 
 let disc = [];
 
-register("chat", (info) => {
-	if (!Settings.deathtitle) return;
+const reg1 = register("chat", (info) => {
 	let ign = info.match(/\w+/)[0];
 	if (ign == "You") return;
 	if (info.includes("disconnected")) {
 		disc.push(ign)
 		setTimeout(() => disc.splice(disc.indexOf(ign), 1), 1000)
 	}
+	if (!Settings.deathtitle) return;
 	let dclass = getDclass(ign);
 	if (!dclass) return;
 
 	Client.showTitle("", "", 0, 1, 0);
 	setTimeout(() => { Client.showTitle("&c☠ " + dclass + " ☠", ign, 0, 25, 5); }, 1);
-}).setCriteria(" ☠ ${info} and became a ghost.");
+}).setCriteria(" ☠ ${info} and became a ghost.").unregister();
 
-register("chat", (ign) => {
-	if (!Settings.dtrevtitle) return;
+const reg2 = register("chat", (ign) => {
+	if (!Settings.revtitle) return;
 	let dclass = getDclass(ign);
 	if (!dclass) return;
 
@@ -32,4 +32,20 @@ register("chat", (ign) => {
 		setTimeout(() => { Client.showTitle("§a1 " + dclass + " §a1", ign, 0, 10, 5); }, 3000);
 		setTimeout(() => { Client.showTitle("§a❣ " + dclass + " §a❣", ign, 0, 15, 5); }, 4000);
 	}, 1000)
-}).setCriteria(" ❣ You are reviving ${ign}!");
+}).setCriteria(" ❣ You are reviving ${ign}!").unregister();
+
+const reg3 = register("worldUnload", () => disc = []).unregister();
+
+
+const deathtitle = {
+	update() {
+		if (Settings.maintoggle && (Settings.deathtitle || Settings.revtitle)) {
+			reg1.register(); reg2.register(); reg3.register();
+		}
+		else {
+			reg1.unregister(); reg2.unregister(); reg3.unregister();
+		}
+	}
+}
+
+export default deathtitle;

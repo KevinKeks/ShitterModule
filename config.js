@@ -1,8 +1,8 @@
-import { @Vigilant, @SliderProperty, @SelectorProperty, @SwitchProperty, @ButtonProperty, @CheckboxProperty } from 'Vigilance';
+import { @Vigilant, @SliderProperty, @SelectorProperty, @SwitchProperty, @ButtonProperty, @CheckboxProperty, @TextProperty } from 'Vigilance';
 
 @Vigilant('shittermodule', 'ShitterModule', {
     getCategoryComparator: () => (a, b) => {
-        const categories = ['dev', 'Dungeons', 'Other', 'Gui'];
+        const categories = ['dev', 'Dungeons', 'QoL', 'Other', 'Gui'];
         return categories.indexOf(a.name) - categories.indexOf(b.name);
     }
 })
@@ -16,6 +16,13 @@ class Settings {
         this.addDependency("Sound", "Miningability");
         this.addDependency("Only In Dungeons", "Invprocs Display");
         this.addDependency("Only In P3", "Invprocs Display");
+        this.addDependency("Sapphire Crystal", "Nucleuswarp");
+        this.addDependency("Jade Crystal", "Nucleuswarp");
+        this.addDependency("Amethyst Crystal", "Nucleuswarp");
+        this.addDependency("Amber Crystal", "Nucleuswarp");
+        this.addDependency("Topaz Crystal", "Nucleuswarp");
+        this.addDependency("Storagetype", "Toolstash");
+        this.addDependency("Storagenumber", "Toolstash");
     }
 
     @CheckboxProperty({
@@ -24,6 +31,13 @@ class Settings {
         hidden: true,
     })
     firstload = true;
+
+    @SwitchProperty({
+        name: "Main Toggle",
+        description: "Turn the whole module on/off",
+        category: "Main",
+    })
+    maintoggle = false;
 
     @SwitchProperty({
         name: "Betterbeam",
@@ -47,7 +61,7 @@ class Settings {
         category: "Dungeons",
         subcategory: 'Deathtitle',
     })
-    dtrevtitle = false;
+    revtitle = false;
 
     @SwitchProperty({
         name: "Ghostpick",
@@ -92,7 +106,7 @@ class Settings {
 
     @SliderProperty({
         name: 'Delay',
-        description: 'Delay in Milliseconds before requeue. Number between 0 and 2000.\n&cCan requeue too early!',
+        description: 'Delay in Milliseconds before requeue. Number between 0 and 2000\n&cNot in sync with the server! Can requeue too early!',
         category: 'Dungeons',
         subcategory: 'M5rq',
         min: 0,
@@ -118,7 +132,7 @@ class Settings {
 
     @SwitchProperty({
         name: 'Show When Ready',
-        description: 'Shows in chat when the ability cooldown for an item is over',
+        description: 'Shows in chat when the ability cooldown for an item is over\n&cNot in sync with the server!',
         category: 'Other',
         subcategory: 'Invincibility Procs',
     })
@@ -126,7 +140,7 @@ class Settings {
 
     @SwitchProperty({
         name: 'Ready Title',
-        description: 'Shows a title when the ability cooldown for an item is over',
+        description: 'Shows a title when the ability cooldown for an item is over\n&cNot in sync with the server!',
         category: 'Other',
         subcategory: 'Invincibility Procs',
     })
@@ -134,7 +148,7 @@ class Settings {
 
     @SwitchProperty({
         name: 'Invprocs Display',
-        description: 'Display for your proc-items',
+        description: 'Display for your proc-items\n&cNot in sync with the server!',
         category: 'Other',
         subcategory: 'Invincibility Procs',
     })
@@ -159,7 +173,7 @@ class Settings {
     @SwitchProperty({
         name: 'Pearlrefill',
         description: 'Refills your enderpearls now and then',
-        category: 'Other',
+        category: 'Dungeons',
         subcategory: 'Refills',
     })
     pearlrefill = false;
@@ -167,7 +181,7 @@ class Settings {
     @SwitchProperty({
         name: 'Boomrefill',
         description: 'Refills your superboom now and then',
-        category: 'Other',
+        category: 'Dungeons',
         subcategory: 'Refills',
     })
     boomrefill = false;
@@ -175,7 +189,7 @@ class Settings {
     @SwitchProperty({
         name: 'Sceptrepearl',
         description: 'Pearl when right-clicking a block with a spirit sceptre\n&cUse at your own risk!',
-        category: 'Other',
+        category: 'Dungeons',
         subcategory: 'Sceptrepearl',
     })
     sceptrepearl = false;
@@ -191,7 +205,7 @@ class Settings {
     @SwitchProperty({
         name: 'Miningability',
         description: 'Shows a title when your mining ability is ready',
-        category: 'Other',
+        category: 'QoL',
         subcategory: 'Miningability',
     })
     miningability = false;
@@ -199,7 +213,7 @@ class Settings {
     @CheckboxProperty({
         name: 'Sound',
         description: 'Also play a sound',
-        category: 'Other',
+        category: 'QoL',
         subcategory: 'Miningability',
     })
     masound = false;
@@ -211,6 +225,130 @@ class Settings {
         subcategory: 'Helmet Display',
     })
     helmetdisplay = false;
+
+    @SwitchProperty({
+        name: 'Trapperwarp',
+        description: 'Warp to trapper when your animal dies',
+        category: 'QoL',
+        subcategory: 'Trapperwarp',
+    })
+    trapperwarp = false;
+
+    @SwitchProperty({
+        name: 'Warp Desert',
+        description: 'Warp to desert when your animal is in the settlement',
+        category: 'QoL',
+        subcategory: 'Trapperwarp',
+    })
+    trapperwarpdesert = false;
+
+    @SwitchProperty({
+        name: 'Nucleuswarp',
+        description: 'Warp to the crystal nucleus when collecting a crystal',
+        category: 'QoL',
+        subcategory: 'Nucleuswarp',
+    })
+    nucleuswarp = false;
+
+    @CheckboxProperty({
+        name: 'Sapphire Crystal',
+        category: 'QoL',
+        subcategory: 'Nucleuswarp',
+    })
+    sapphirewarp = true;
+
+    @CheckboxProperty({
+        name: 'Jade Crystal',
+        category: 'QoL',
+        subcategory: 'Nucleuswarp',
+    })
+    jadewarp = true;
+
+    @CheckboxProperty({
+        name: 'Amethyst Crystal',
+        category: 'QoL',
+        subcategory: 'Nucleuswarp',
+    })
+    amethystwarp = true;
+
+    @CheckboxProperty({
+        name: 'Amber Crystal',
+        category: 'QoL',
+        subcategory: 'Nucleuswarp',
+    })
+    amberwarp = true;
+
+    @CheckboxProperty({
+        name: 'Topaz Crystal',
+        category: 'QoL',
+        subcategory: 'Nucleuswarp',
+    })
+    topazwarp = true;
+
+    @SwitchProperty({
+        name: 'Inventory Chat',
+        description: 'Send messages while in an inventory by pressing Ctrl + Chatkey\n&cVery scuffed!',
+        category: 'Other',
+    })
+    inventorychat = false;
+
+    @SwitchProperty({
+        name: 'Composter Grab',
+        description: 'Grabs Box of Seeds and Oil Barrels from your sax',
+        category: 'QoL',
+        subcategory: 'Composter Grab',
+    })
+    compostergrab = false;
+
+    @SwitchProperty({
+        name: 'Composter Insert',
+        description: 'Inserts Box of Seeds and Oil barrels from your inventory',
+        category: 'QoL',
+        subcategory: 'Composter Grab',
+    })
+    composterinsert = false;
+
+    @TextProperty({
+        name: 'Crop Threshold',
+        description: 'Grab Box of Seeds when the cropmeter is below this value',
+        category: 'QoL',
+        subcategory: 'Composter Grab',
+    })
+    cropthreshold = "600000";
+
+    @TextProperty({
+        name: 'Fuel Threshold',
+        description: 'Grab Oil Barrels when the fuelmeter is below this value',
+        category: 'QoL',
+        subcategory: 'Composter Grab',
+    })
+    fuelthreshold = "600000";
+
+    @SwitchProperty({
+        name: 'Toolstash',
+        description: 'Puts the 4th Mines of Divan Tool that you find into your storage\n&cUse at your own risk!',
+        category: 'QoL',
+        subcategory: 'Toolstash',
+    })
+    toolstash = false;
+
+    @SelectorProperty({
+        name: 'Storagetype',
+        description: 'Select the storage type',
+        category: 'QoL',
+        subcategory: 'Toolstash',
+        options: ['Enderchest', 'Backpack']
+    })
+    storagetype = 0;
+
+    @SelectorProperty({
+        name: 'Storagenumber',
+        description: 'Select the page',
+        category: 'QoL',
+        subcategory: 'Toolstash',
+        options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18']
+    })
+    storagenumber = 0;
 
     @ButtonProperty({
         name: 'Edit Gui',

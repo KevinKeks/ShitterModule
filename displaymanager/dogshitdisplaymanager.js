@@ -85,7 +85,7 @@ class DDM {
         })
     }
 
-    addDisplay(name, x = Number((Renderer.screen.getWidth() / 3).toFixed()), y = Number((Renderer.screen.getHeight() / 4).toFixed()), scale = 1, background = false, align = "LEFT") {
+    addDisplay(name, x = Math.trunc(Renderer.screen.getWidth() / 3), y = Math.trunc(Renderer.screen.getHeight() / 4), scale = 1, background = false, align = "LEFT") {
         if (this.#displays[name]) return console.warn(`[DDM]: Display with #name "${name}" already exists`);
         if (!this.#displaydata[name]) {
             this.#displaydata[name] = { x, y, scale, background, align }
@@ -106,8 +106,8 @@ class DDM {
     close() { this.#gui.close(); }
     reset() {
         Object.values(this.#displays).forEach(d => {
-            d.setX(Number((Renderer.screen.getWidth() / 3).toFixed()));
-            d.setY(Number((Renderer.screen.getHeight() / 4).toFixed()));
+            d.setX(Math.trunc(Renderer.screen.getWidth() / 3));
+            d.setY(Math.trunc(Renderer.screen.getHeight() / 4));
             d.setScale(1);
             d.setBackground(false);
             d.setAlign("LEFT");
@@ -177,7 +177,7 @@ class DDM {
         get Align() { return this.#align; }
         setAlign(align) {
             this.#align = align.toUpperCase();
-            this.#x = this.#x + (this._getXAdjust(true) == 0 ? (- this.#width) : (this.#width / 2))
+            this.#x = Math.trunc(this.#x + (this._getXAdjust(true) ? (this.#width / 2) : (- this.#width)));
             return this;
         }
         addLine(text = "") {
@@ -220,7 +220,7 @@ class DDM {
                     this.setClickAction(action, i);
                 this.#clickAction = action;
             } else if (index >= 0 && index < this.#displayLines.length) {
-                this.#displayLines[index].unregisterClicked().registerClicked((x, y, btn, state) => {
+                this.#displayLines[index].registerClicked((x, y, btn, state) => {
                     if (!this.#gui.isguiopen && state) {
                         const now = Date.now();
                         if (now - this.#lastClickTimestamp < 100) return;
@@ -253,8 +253,9 @@ class DDM {
             const guirender = (gui === this.#gui);
             const guiopen = this.#gui.isguiopen;
             if (guiopen && guirender && this === selected) {
-                const tempLine = new DisplayLine(`x: ${this.#x} y: ${this.#y} scale: ${Number(this.#scale).toFixed(1)}\nalign: ${this.#align.toLowerCase()} background: ${this.Background ? "on" : "off"}`);
-                tempLine.draw(this.#x - this._getXAdjust(), this.#y - 20, tempLine.getTextWidth(), DisplayHandler.Background.NONE, 0, -1, DisplayHandler.Align.LEFT);
+                new DisplayLine(`Selected: ${this.name}`).draw(Renderer.screen.getWidth() / 2, Renderer.screen.getHeight() / 15, this.#width, DisplayHandler.Background.NONE, 0, -1, DisplayHandler.Align.CENTER);
+                new DisplayLine(`X: ${this.#x} Y: ${this.#y} Scale: ${Number(this.#scale).toFixed(1)}`).draw(Renderer.screen.getWidth() / 2, Renderer.screen.getHeight() / 15 + 10, this.#width, DisplayHandler.Background.NONE, 0, -1, DisplayHandler.Align.CENTER);
+                new DisplayLine(`Align: ${this.#align.toLowerCase()} Background: ${this.Background ? "on" : "off"}`).draw(Renderer.screen.getWidth() / 2, Renderer.screen.getHeight() / 15 + 20, this.#width, DisplayHandler.Background.NONE, 0, -1, DisplayHandler.Align.CENTER);
             }
             let height = 0;
             const background = (guiopen && guirender) ? DisplayHandler.Background.FULL : this.#background;

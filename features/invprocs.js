@@ -1,17 +1,18 @@
 import Settings from "../config";
 import smgui from "../displaymanager/smgui";
-import { prefix, getdun, getp3 } from "../utils"
+import prefix from "../utils/prefix"
+import { getdun, getp3 } from "../utils/dungeons"
 
 const invprocsdisplay = smgui.addDisplay("Inv Procs")
-register("renderOverlay", () => { if (Settings.ipdisplay && (!Settings.ipdponlydungeons || getdun()) && (!Settings.ipdponlyp3 || getp3())) invprocsdisplay.draw() });
-
-let bonzocd, spiritcd, phoenixcd = false;
-let colorcode = 0;
 const colours = ["&a", "&e", "&c", "&b"];
 const lines = ["Bonzo", "Spirit", "Phoenix"];
 invprocsdisplay.addLines([`&d${lines[0]} &aReady`, `&d${lines[1]} &aReady`, `&d${lines[2]} &aReady`]);
+const reg1 = register("renderOverlay", () => { if ((!Settings.ipdponlydungeons || getdun()) && (!Settings.ipdponlyp3 || getp3())) invprocsdisplay.draw() }).unregister();
 
-register("packetReceived", packet => {
+let bonzocd, spiritcd, phoenixcd = false;
+let colorcode = 0;
+
+const reg2 = register("packetReceived", packet => {
 	if (packet.func_179841_c() === 2) return;
 	const message = ChatLib.removeFormatting(packet.func_148915_c().func_150260_c());
 
@@ -42,9 +43,9 @@ register("packetReceived", packet => {
 	invprocsdisplay.setLine(lines.indexOf(item), `&d${item} &cNot Ready`)
 	colorcode++;
 	onCooldown(item);
-}).setFilteredClass(Java.type("net.minecraft.network.play.server.S02PacketChat"));
+}).setFilteredClass(Java.type("net.minecraft.network.play.server.S02PacketChat")).unregister();
 
-register("worldLoad", () => {
+const reg3 = register("worldLoad", () => {
 	if (bonzocd) {
 		bonzocd = false;
 		onCdOver("Bonzo")
@@ -53,7 +54,7 @@ register("worldLoad", () => {
 		spiritcd = false;
 		onCdOver("Spirit")
 	}
-});
+}).unregister();
 
 function onCooldown(item) {
 	switch (item) {
@@ -91,3 +92,21 @@ function onCdOver(item) {
 	}
 	invprocsdisplay.setLine(lines.indexOf(item), `&d${item} &aReady`)
 }
+
+
+const invprocs = {
+	update() {
+		if (Settings.maintoggle && Settings.ipdisplay) {
+			reg1.register(); reg2.register(); reg3.register();
+		}
+		else if (Settings.maintoggle && (Settings.ipproctitle || Settings.ipannounce || Settings.ipshowwhenready || Settings.ipreadytitle)) {
+			reg1.unregister();
+			reg2.register(); reg3.register();
+		}
+		else {
+			reg1.unregister(); reg2.unregister(); reg3.unregister();
+		}
+	}
+}
+
+export default invprocs;
