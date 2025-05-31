@@ -28,8 +28,8 @@ function grab(attempts = 0) {
 	let cropmeter = croplore[1].match(/§r §e([\d|,]*)\.?.?§6\/§e(\d*)k/)?.map(i => parseInt(i.replace(",", "")));
 	let fuelmeter = fuellore[1].match(/§r §e([\d|,]*)\.?.?§6\/§e(\d*)k/)?.map(i => parseInt(i.replace(",", "")));
 	if (!cropmeter || !fuelmeter) return;
-	let cropneeded = Math.trunc((cropmeter[2] * 1000 - cropmeter[1]) / 25600) - (getIndexOf("Crop")?.getStackSize() ?? 0);
-	let fuelneeded = Math.trunc((fuelmeter[2] * 1000 - fuelmeter[1]) / 10000) - (getIndexOf("Fuel")?.getStackSize() ?? 0);
+	let cropneeded = Math.trunc((cropmeter[2] * 1000 - cropmeter[1]) / 25600) - (getIndexOf("Crop")?.item?.getStackSize() ?? 0);
+	let fuelneeded = Math.trunc((fuelmeter[2] * 1000 - fuelmeter[1]) / 10000) - (getIndexOf("Fuel")?.item?.getStackSize() ?? 0);
 
 	let cd = false;
 	if (cropmeter[1] < cropthreshold) {
@@ -42,7 +42,7 @@ function grab(attempts = 0) {
 	if (fuelmeter[1] < fuelthreshold) {
 		setTimeout(() => {
 			if (fuelneeded > 0 && Settings.compostergrab)
-				ChatLib.command("gfs Oil_Barrel " + fuelneeded)
+				ChatLib.command("gfs Oil_Barrel " + fuelneeded);
 			setTimeout(() => insert("Fuel"), cd ? 500 : 1500);
 		}, cd ? 2000 : 0);
 	}
@@ -55,21 +55,21 @@ const types = {
 
 function getIndexOf(type) {
 	const inv = Player.getInventory();
-	for (let i = 0; i < 36; i++) {
-		let item = inv.getStackInSlot(i)
+	for (let index = 0; index < 36; index++) {
+		let item = inv.getStackInSlot(index)
 		if (!item) continue;
 		if (item.name === types[type])
-			return i
+			return { index, item }
 	}
-	return -1;
+	return null;
 }
 
 function insert(type, attempts = 0) {
 	if (!Settings.composterinsert) return;
 	const cont = Player.getContainer();
 	if (!cont) return;
-	let invindex = getIndexOf(type);
-	if (invindex == -1) {
+	let invindex = getIndexOf(type)?.index;
+	if (invindex === null) {
 		if (attempts < 6) setTimeout(() => insert(type, attempts + 1), 500);
 		return;
 	}
