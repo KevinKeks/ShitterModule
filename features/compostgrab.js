@@ -11,7 +11,7 @@ const reg1 = register("GuiOpened", () => {
 		if (!cont || cont.name !== "Composter") return;
 		cropthreshold = Math.trunc(Number(Settings.cropthreshold?.trim()));
 		fuelthreshold = Math.trunc(Number(Settings.fuelthreshold?.trim()));
-		if (isNaN(cropthreshold) || isNaN(fuelthreshold)) return ChatLib.chat(prefix("Compostergrab") + "Failed to read threshold");
+		if (Number.isNaN(cropthreshold) || Number.isNaN(fuelthreshold)) return ChatLib.chat(prefix("Compostergrab") + "Failed to read threshold");
 		grab();
 	});
 }).unregister();
@@ -32,18 +32,20 @@ function grab(attempts = 0) {
 	let fuelneeded = Math.trunc((fuelmeter[2] * 1000 - fuelmeter[1]) / 10000) - (getIndexOf("Fuel")?.item?.getStackSize() ?? 0);
 
 	let cd = false;
+	let cdd = false;
 	if (cropmeter[1] < cropthreshold) {
 		if (cropneeded > 0 && Settings.compostergrab) {
 			ChatLib.command("gfs Box_of_Seeds " + cropneeded);
 			cd = true;
 		}
+		cdd = true;
 		setTimeout(() => insert("Crop"), 500);
 	}
 	if (fuelmeter[1] < fuelthreshold) {
 		setTimeout(() => {
 			if (fuelneeded > 0 && Settings.compostergrab)
 				ChatLib.command("gfs Oil_Barrel " + fuelneeded);
-			setTimeout(() => insert("Fuel"), cd ? 500 : 1500);
+			setTimeout(() => insert("Fuel"), !cd && cdd ? 1000 : 500);
 		}, cd ? 2000 : 0);
 	}
 }
@@ -74,6 +76,7 @@ function insert(type, attempts = 0) {
 		return;
 	}
 	const contindex = cont.size + invindex - (invindex < 9 ? 9 : 45);
+	if (Number.isNaN(contindex) || contindex < 54 || 88 < contindex) return;
 	cont?.click(contindex, false, "MIDDLE");
 }
 
